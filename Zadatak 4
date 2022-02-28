@@ -1,0 +1,70 @@
+#Napisati funkciju u kojoj se ispituje je li graf Eulerov. Ako je graf Eulerov, ispisati
+#jedan od Eulerovih puteva u grafu (ne koristiti gotova rješenja s interneta).
+#Testirati na datasetovima euler.net, eva.net i football.net.
+
+import numpy as np
+def ucitajDatoteku():
+    edges=[]
+    f=open("euler1.net", "r")
+    for line in f:
+        if "*Edges" in line:
+            for element in f.readlines():
+                edges.append(list(map(int,element.split())))
+    return edges
+
+def broj_vrhova():
+    n = 0
+    f=open("euler1.net", "r")
+    for line in f:
+        if line.split()[0] == '*Vertices':
+            n = line.split()[1]
+    return int(n)
+
+def matricaSusjedstva(n, niz):
+    matrica = np.zeros(shape=(n,n))
+    for i in range(1,n+1):
+        for j in range(1,n+1):
+            for k in niz:
+                if (i == k[0] and j == k[1]) or (i == k[1] and j == k[0]):
+                    matrica[i-1,j-1] = 1  
+    return matrica
+    
+def eulerov_graf():
+    niz = []
+    
+    for i in range(n):
+        temp = 0
+        for j in range(n):
+            temp += int(matrica_susjedstva[i][j])
+        niz.append(temp)
+   
+    br = 0
+    for i in niz:
+        if i % 2 == 0:
+            br += 1
+    if br != n:
+        print("Graf nije Eulerov")
+    else:
+        print("Graf je Eulerov\nEulerov put")
+        eulerov_put(euler,0) 
+        print(euler)
+        
+def eulerov_put(euler, pocetni):
+    k = 0
+    while k < n:
+
+        if matrica_susjedstva[pocetni][k] == 1:
+            matrica_susjedstva[pocetni][k] = 0
+            matrica_susjedstva[k][pocetni] = 0
+
+            eulerov_put(euler, k)
+        k += 1
+    euler.append(pocetni+1)         
+
+edges = ucitajDatoteku()
+n = broj_vrhova()
+print("MATRICA SUSJEDSTVA")
+matrica_susjedstva = matricaSusjedstva(n,edges)
+print(matrica_susjedstva)
+euler = []
+eulerov_graf()
