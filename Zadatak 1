@@ -1,0 +1,26 @@
+#1. Napisati funkciju koja čita datoteku u kojoj je zapisan graf u pajek formatu i sprema
+podatke o grafu u strukturu podataka po volji (matricu susjedstva, matricu incidencije ili listu susjedstva grafa).
+
+import numpy as np #koristis ovu biblioteku jer imas veliku matricu u pitanju 35 x 35
+def ucitajDatoteku():
+    arcs=[] 
+    f=open("football.net", "r") 
+    for line in f: 
+        if "*Arcs" in line:
+            for element in f.readlines():
+                if (element.split()[0] != "*Edges"): 
+                    arcs.append(list(map(int,element.split())))
+    return sorted(arcs)
+
+def matricaSusjedstva(n,niz):
+    matrica = np.zeros(shape=(n,n)) 
+    for i in range(1,n+1):
+        for j in range(1,n+1):
+            for k in niz: 
+                if (i == k[0] and j == k[1]) or (i == k[1] and j == k[0]):
+                    matrica[i-1,j-1] = 1 
+    return matrica
+ 
+arcs = ucitajDatoteku() 
+n = arcs[len(arcs)-1][0]
+print(matricaSusjedstva(n,arcs))
