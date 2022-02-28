@@ -1,0 +1,35 @@
+#Napisati funkcije koje računaju:
+# — broj vrhova u grafu
+# — broj bridova u grafu
+# — stupanj svakog vrha
+# — vrhove s maksimalnim brojem incidentnih bridova
+
+def treciZadatak():
+    f=open("eva.net", "r")
+    br = 0
+    d = {}
+    for line in f:
+        if line.split()[0] == '*vertices': 
+            print("Broj vrhova u grafu: " + line.split()[1])
+        if "*arcs" in line: 
+            for element in f.readlines():
+                br += 1
+                if element.split()[0] not in d:
+                    d[element.split()[0]] = 1 
+                else:
+                    d[element.split()[0]] += 1
+                if element.split()[1] not in d:
+                    d[element.split()[1]] = 1
+                else:
+                    d[element.split()[1]] += 1
+               
+    print("Broj bridova u grafu: " + str(br))
+    print("Stupanj svakog vrha")
+    print(d)
+    print("Vrhovi s maksimalnim brojem incidentalnih bridova")
+    maxi = max(d.values()) 
+    for key in d:
+        if maxi == d[key]:
+            print(key)
+            
+treciZadatak()
